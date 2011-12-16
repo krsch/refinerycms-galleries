@@ -1,0 +1,32 @@
+<% content_for :stylesheets do %>
+<%=stylesheet_link_tag 'slimbox2', :media => 'screen' %>
+<%=javascript_include_tag :defaults, 'slimbox2' %>
+<% end %>
+<% content_for :body_content_title do %>
+  <%= @gallery.title %>
+<% end %>
+
+<% content_for :body_content_left do %>
+  <section>
+    <ul>
+    	<% @filenames.each do |filename| %>
+    	<li> <%= link_to image_tag(@urlprefix + '.thumb/' + File.basename(filename)), @urlprefix + File.basename(filename), :rel => 'lightbox-gallery'%>
+	<% end %>
+    </ul>
+  </section>
+<% end %>
+
+<% content_for :body_content_right do %>
+  <aside>
+    <h2><%= t('.other') %></h2>
+    <ul id="galleries">
+      <% @galleries.each do |gallery| %>
+        <li>
+          <%= link_to gallery.title, gallery_path(gallery) %>
+        </li>
+      <% end %>
+    </ul>
+  </aside>
+<% end %>
+
+<%= render :partial => "/shared/content_page" %>
