@@ -19,6 +19,7 @@ module Refinery
         Refinery::Plugin.register do |plugin|
           plugin.name = "galleries"
           plugin.pathname = root
+	  plugin.hide_from_menu = true
           plugin.activity = {
             :class => Gallery
           }

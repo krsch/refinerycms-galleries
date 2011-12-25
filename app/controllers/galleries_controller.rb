@@ -11,11 +11,7 @@ class GalleriesController < ApplicationController
 
   def show
     @gallery = Gallery.find(params[:id])
-    base = Rails.root.join 'public', 'system', 'galleries', @gallery.folder, '*.*'
-    #@glob = base + @gallery.folder + '/*.jpg'
-    #@filenames = Dir.glob(base + @gallery.folder + '/*.jpg')
-    @filenames = Dir.glob(base)
-    @urlprefix = '/system/galleries/' + @gallery.folder + '/'
+    @filenames = @gallery.list_files
 
     # you can use meta fields from your model instead (e.g. browser_title)
     # by swapping @page for @gallery in the line below:
