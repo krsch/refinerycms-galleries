@@ -3,6 +3,7 @@ class Gallery < ActiveRecord::Base
   acts_as_indexed :fields => [:title, :description, :folder]
 
   validates :title, :presence => true, :uniqueness => true
+  belongs_to :page
 
   BASE = Rails.root.join 'public', 'system', 'galleries'
   

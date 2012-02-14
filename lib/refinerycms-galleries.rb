@@ -25,6 +25,13 @@ module Refinery
           }
         end
       end
+      config.to_prepare do
+        Page.module_eval do
+	  has_one :gallery
+
+	end
+      end
     end
   end
 end
+
