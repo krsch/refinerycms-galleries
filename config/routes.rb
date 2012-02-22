@@ -6,6 +6,10 @@
       collection do
         post :update_positions
       end
+      member do
+        get :upload, :to => 'galleries#upload_new'
+        put :upload
+      end
       match 'image/:image_name', :to => 'galleries#delete_image', :via => :delete, :on => :member
     end
   end

@@ -16,14 +16,18 @@
       <div id='page_part_editors'>
 	<div class='page_part' id='text'>
 
-	  <div class='field'>
-	    <%= f.label :title -%>
-	    <%= f.text_field :title, :class => 'larger widest'  -%>
-	  </div>
+	  <!--<div class='field'>
+	    <%#= f.label :title -%>
+	    <%#= f.text_field :title, :class => 'larger widest'  -%>
+	  </div>-->
 
+	  <!--<div class='field'>
+	    <%#= f.label :description %>
+	    <%#= f.text_area :description, :rows => 20, :class => 'wymeditor widest' -%>
+	  </div>-->
 	  <div class='field'>
-	    <%= f.label :description %>
-	    <%= f.text_area :description, :rows => 20, :class => 'wymeditor widest' -%>
+	    <%= f.label :page_id %>
+	    <%= f.text_field :page_id %>
 	  </div>
 
 	  <div class='field'>
@@ -35,12 +39,12 @@
 	<div class='page_part' id='images'>
 	  <div class='wym_box field images_field'>
 	    <ul id='page_images' class='clearfix'>
-	      <% @filenames.each do |filename|%>
-		<li> <%= link_to image_tag(@urlprefix + '.thumb/' + File.basename(filename)), @urlprefix + File.basename(filename), :rel => 'lightbox-gallery'%>
+	      <% if @filenames then @filenames.each do |filename|%>
+		<li> <%= @gallery.tag(filename) %> 
 		<div class='image_actions no-captions' style='display:none'>
 		  <%= link_to image_tag('/images/refinery/icons/delete.png', :width => 16, :height => 16), admin_gallery_path(@gallery)+'/image/'+File.basename(filename), :method => :delete, :confirmation => t('.sure-delete') %>
 		</div>
-	      <% end %>
+	      <% end end %>
 	    </ul>
 	  </div>
 	</div>

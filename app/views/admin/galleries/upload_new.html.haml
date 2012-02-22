@@ -1,0 +1,5 @@
+/=form_tag ({:action => :upload}, :multipart => true) do
+=form_for [:admin, @gallery], :url => {:action=>:upload}, :html => {:multipart => true} do |f|
+  =file_field_tag 'images[]', :multiple => true
+  =f.submit
+

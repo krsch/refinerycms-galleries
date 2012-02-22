@@ -19,4 +19,8 @@ class Gallery < ActiveRecord::Base
   def thumb(filename)
     File.join('.thumb', filename)
   end
+
+  def tag(filename)
+    link_to image_tag(url_for(thumb(filename))), url_for(filename), :rel => 'lightbox-gallery'
+  end
 end
