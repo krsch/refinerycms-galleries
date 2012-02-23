@@ -9,6 +9,6 @@ Gem::Specification.new do |s|
   s.authors	      = %w(krsch)
   s.email             = %q{akrsch@gmail.com}
   s.homepage          = %q{http://github.com/krsch/refinerycms-galleries}
-  s.files             = Dir['lib/**/*', 'config/**/*', 'app/**/*']
+  s.files             = Dir['lib/**/*', 'config/**/*', 'app/**/*', 'public/stylesheets/gallery.css']
   s.add_dependency('rubyzip')
 end

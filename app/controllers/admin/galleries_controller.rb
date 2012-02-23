@@ -18,20 +18,43 @@ require 'zip/zip'
       @gallery = Gallery.find(params[:id])
     end
 
+    def update
+      redirect_to :action => :show
+    end
+
+    def create
+      @gallery = Gallery.new(params[:gallery])
+      page_title = @gallery.title
+      page = Page.find_by_title(page_title)
+      @gallery.page_id = page.id if page
+      if @gallery.save
+        Dir.mkdir File.join(Gallery::BASE, @gallery.folder)
+        redirect_to :action => :index
+      else
+        @gallery.errors[:title] = @gallery.errors[:page_id]
+	@gallery.errors.delete :page_id
+        render :action => :new
+      end
+    end
+
     def upload
       files = params[:images]
       @gallery = Gallery.find(params[:id])
       files.each do |file|
 	if file.content_type == 'application/zip' then
-	  Zip::ZipInputStream::open(file.read) do |io|
-	    while (entry = io.get_next_entry)
-	      add_image entry.read, entry.name
+	  Tempfile::open('galleries') do |temp|
+	    temp.write(file.read)
+	    Zip::ZipInputStream::open(temp.path) do |io|
+	      while (entry = io.get_next_entry)
+		@gallery.add_image entry.get_input_stream.read, entry.name
+	      end
 	    end
 	  end
-	elsif file.content_type.startsWith('image/')
-	  add_image file.read, file.original_filename
+	elsif file.content_type.starts_with?('image/')
+	  @gallery.add_image file.read, file.original_filename
 	end
       end
+      redirect_to :action =>:edit, :id => @gallery.id
     end
   protected
     def find_gallery_images
@@ -39,16 +62,6 @@ require 'zip/zip'
       #base = Rails.root.join 'public', 'system', 'galleries', gallery.folder, '*.*'
       @filenames = @gallery.list_files() #Dir.glob(base)
       #@urlprefix = '/system/galleries/' + gallery.folder + '/'
-    end
-
-    def add_image(file, name)
-      path = File.join(Gallery::BASE, @gallery.folder, name)
-      File.open(path, 'wb') { |f| f.write(file) }
-      im = Dragonfly[:images].fetch_file(path)
-      unless im.height<1000 && im.width <1000
-	im.process(:resize, '1000x1000').encode(:jpg, '-quality 80').to_file(path)
-      end
-      im.thumb('200x200').encode(:jpg, '-quality 80').to_file(File.join(Gallery::BASE, @gallery.folder, '.thumb', name))
     end
   end
 end

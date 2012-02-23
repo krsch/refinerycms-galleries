@@ -4,53 +4,25 @@
           :include_object_name => true
         } %>
 
-  <div class='field'>
-    <div id='page-tabs' class='clearfix ui-tabs ui-widget ui-widget-content ui-corner-all'>
-      <ul id='page_parts'>
-        <% [:text, :images].each_with_index do |part, part_index| %>
-          <li class='ui-state-default<%= ' ui-state-active' if part_index == 0 %>'>
-            <%= link_to part.to_s.titleize, "##{part}" %>
-          </li>
-        <% end %>
-      </ul>
-      <div id='page_part_editors'>
-	<div class='page_part' id='text'>
-
-	  <!--<div class='field'>
-	    <%#= f.label :title -%>
-	    <%#= f.text_field :title, :class => 'larger widest'  -%>
-	  </div>-->
-
-	  <!--<div class='field'>
-	    <%#= f.label :description %>
-	    <%#= f.text_area :description, :rows => 20, :class => 'wymeditor widest' -%>
-	  </div>-->
-	  <div class='field'>
-	    <%= f.label :page_id %>
-	    <%= f.text_field :page_id %>
-	  </div>
-
-	  <div class='field'>
-	    <%= f.label :folder -%>
-	    <%= f.text_field :folder  -%>
-	  </div>
-	</div>
-	
-	<div class='page_part' id='images'>
-	  <div class='wym_box field images_field'>
-	    <ul id='page_images' class='clearfix'>
-	      <% if @filenames then @filenames.each do |filename|%>
-		<li> <%= @gallery.tag(filename) %> 
-		<div class='image_actions no-captions' style='display:none'>
-		  <%= link_to image_tag('/images/refinery/icons/delete.png', :width => 16, :height => 16), admin_gallery_path(@gallery)+'/image/'+File.basename(filename), :method => :delete, :confirmation => t('.sure-delete') %>
-		</div>
-	      <% end end %>
-	    </ul>
-	  </div>
-	</div>
-      </div>
+    <div class='field'>
+      <%=f.label :title %>
+      <%=f.text_field :title %>
     </div>
-  </div>
+
+    <div class='field'>
+      <%= f.label :folder -%>
+      <%= f.text_field :folder  -%>
+    </div>
+  
+    <h2> Images </h2>
+    <ul id='gallery' class='image-grid' class='clearfix'>
+      <% if @filenames then @filenames.each do |filename|%>
+	<li> <%= link_to image_tag(@gallery.thumb_url(filename)), @gallery.url_for(filename), :rel => 'lightbox-gallery' %>
+	<div class='image_actions no-captions' style='display:none'>
+	  <%= link_to image_tag('/images/refinery/icons/delete.png', :width => 16, :height => 16), admin_gallery_path(@gallery)+'/image/'+File.basename(filename), :method => :delete, :confirmation => t('.sure-delete') %>
+	</div>
+      <% end end %>
+    </ul>
   <%= render :partial => "/shared/admin/form_actions",
               :locals => {
                 :f => f,
@@ -60,7 +32,7 @@
               } %>
 <% end -%>
 <% content_for :stylesheets do %>
-<%= stylesheet_link_tag 'page-image-picker' %>
+<%= stylesheet_link_tag 'page-image-picker', 'gallery' %>
 <% end %>
 <% content_for :javascripts do %>
 <%= javascript_include_tag 'page-image-picker' %>
