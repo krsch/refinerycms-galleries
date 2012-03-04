@@ -1,0 +1,13 @@
+ru:
+  plugins:
+    galleries:
+      title: Галереи
+  admin:
+    galleries:
+      gallery:
+        edit: редактировать
+        delete: удалить
+        view_live_html: просмотреть
+        add_images: добавить изображения
+      actions:
+        create_new: Создать новую галерею
