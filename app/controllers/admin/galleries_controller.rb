@@ -46,12 +46,30 @@ require 'zip/zip'
 	    temp.write(file.read)
 	    Zip::ZipInputStream::open(temp.path) do |io|
 	      while (entry = io.get_next_entry)
-		@gallery.add_image entry.get_input_stream.read, entry.name
+                begin
+		  @gallery.add_image entry.get_input_stream.read, entry.name
+                rescue
+                  if @gallery.list_files.include?(entry.name)
+                    path = File.join(Gallery::BASE, @gallery.folder,entry.name)
+                    File.delete(path)
+                  end
+                  logger.error $!
+                  logger.error "for gallery #{@gallery} and filename #{entry.name}"
+                end
 	      end
 	    end
 	  end
 	elsif file.content_type.starts_with?('image/')
-	  @gallery.add_image file.read, file.original_filename
+          begin
+	    @gallery.add_image file.read, file.original_filename
+          rescue
+            if @gallery.list_files.include?(file.original_filename)
+              path = File.join(Gallery::BASE, @gallery.folder,file.original_filename)
+              File.delete(path)
+            end
+            logger.error $!
+            logger.error "for gallery #{@gallery} and filename #{file.original_filename}"
+          end
 	end
       end
       redirect_to :action =>:edit, :id => @gallery.id
