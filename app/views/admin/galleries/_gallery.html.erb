@@ -1,6 +1,6 @@
 <li class='clearfix record <%= cycle("on", "on-hover") %>' id="<%= dom_id(gallery) -%>">
   <span class='title'>
-    <%= gallery.title %>
+    <%= if gallery.page then gallery.page.custom_title else gallery.title end %>
     <span class="preview">&nbsp;</span>
   </span>
   <span class='actions'>

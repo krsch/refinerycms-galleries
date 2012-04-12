@@ -12,7 +12,7 @@ class Gallery < ActiveRecord::Base
   
   def list_files
     path = File.join(BASE, folder, '*.*')
-    filenames = Dir.glob(path).map {|f| File.basename(f)}
+    filenames = Dir.glob(path).sort.map {|f| File.basename(f)}
   end
 
   def url_for(filename)
