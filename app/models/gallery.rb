@@ -16,7 +16,7 @@ class Gallery < ActiveRecord::Base
   end
 
   def url_for(filename)
-    '/system/galleries/' + CGI::escape(folder) + '/' + CGI::escape(filename)
+    '/system/galleries/' + CGI::escape(folder) + '/' + CGI::escape(filename).gsub('%2F','/')
   end
 
   def thumb(filename)
