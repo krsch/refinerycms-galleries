@@ -74,6 +74,13 @@ require 'zip/zip'
       end
       redirect_to :action =>:edit, :id => @gallery.id
     end
+
+    def destroy
+      gallery = Gallery.find params[:id]
+      FileUtils.rm_r File.join(Gallery::BASE, gallery.folder)
+      gallery.destroy
+      redirect_to :action => :index
+    end
   protected
     def find_gallery_images
       #gallery = Gallery.find(params[:id])
